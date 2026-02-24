@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
+
 	//  Welcome message to the GO conference
 
 	const MN string = "Go conference"
@@ -19,6 +20,7 @@ func main() {
 	fmt.Println("Register here to attend")
 
 	for {
+
 		// getting User input
 
 		var firstname string
@@ -38,29 +40,47 @@ func main() {
 		fmt.Println("Enter the number of tickets you want to purchase")
 		fmt.Scan(&userTickets)
 
+		isValidName := len(firstname) >= 0 && len(lastname) >= 0
+		isValidEmail := strings.Contains(email, "@")
+		isValidUserTicket := userTickets > 0 && userTickets <= RT
+
 		// No of ticket Remaining
 
-		RT = RT - userTickets
+		if isValidName && isValidEmail && isValidUserTicket {
+			RT = RT - userTickets
 
-		// list of attendees for the conference
+			// list of attendees for the conference
 
-		bookings = append(bookings, firstname+" "+lastname)
+			bookings = append(bookings, firstname+" "+lastname)
 
-		fmt.Printf("Thank you %v %v for booking %v ticket(s). you will receive a confirmation mail via %v \n", firstname, lastname, userTickets, email)
-		fmt.Printf("%v tickets remaining for %v\n", RT, MN)
+			fmt.Printf("Thank you %v %v for booking %v ticket(s). you will receive a confirmation mail via %v \n", firstname, lastname, userTickets, email)
+			fmt.Printf("%v tickets remaining for %v\n", RT, MN)
 
-		firstNames := []string{}
-		for _, booking := range bookings {
-			var names = strings.Fields(booking)
-			firstname := names[0]
-			firstNames = append(firstNames, firstname)
+			firstNames := []string{}
+			for _, booking := range bookings {
+				var names = strings.Fields(booking)
+				firstname := names[0]
+				firstNames = append(firstNames, firstname)
+			}
+			fmt.Printf("The first name of bookings are: %v\n", firstNames)
+			// ending the program
+			if RT == 0 {
+				fmt.Printf("Alas!😮‍💨  \n")
+				fmt.Printf("Ticket no longer available \n")
+				break
+			}
+		} else {
+			if !isValidName {
+				fmt.Println("First name and Last name input is incorrect")
+			}
+			if !isValidEmail {
+				fmt.Println("User email address is incorrect")
+			}
+			if !isValidUserTicket {
+				fmt.Println("Number of ticket entered is invalid")
+			}
+
 		}
-		fmt.Printf("The first name of bookings are: %v\n", firstNames)
-		// ending the program
-		if RT == 0 {
-			fmt.Printf("Alas!😮‍💨  \n")
-			fmt.Printf("Ticket no longer available \n")
-			break
-		}
+
 	}
 }
